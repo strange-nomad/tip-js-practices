@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Все задания КР1 — Интерактивный запуск и скриншоты</title>
+  <style>
+    :root {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f4f6f8;
+      color: #1a202c;
+      line-height: 1.5;
+    }
+    body { margin: 0; padding: 24px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    h1 { margin-top: 0; color: #1e3a8a; }
+    .card {
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+    .card h2 { margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; font-size: 1.25rem; }
+    .terminal-output {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: Consolas, "Courier New", monospace;
+      padding: 16px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      overflow-x: auto;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: #dbeafe;
+      color: #1e40af;
+      margin-bottom: 10px;
+    }
+    iframe {
+      width: 100%;
+      height: 520px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Контрольная работа № 1 — Основы JavaScript</h1>
+    <p>На этой странице можно увидеть и скопировать результаты работы скриптов, а также открыть их в консоли браузера (нажмите <b>F12 &rarr; Console</b>).</p>
+
+    <!-- ЗАДАНИЕ 1 -->
+    <div class="card">
+      <span class="badge">Скриншот 1</span>
+      <h2>Задание 1. Сводка выполнения задач (progress.js)</h2>
+      <p>Проверка трёх обязательных кейсов: (12, 5), (0, 0), (5, 6):</p>
+      <div id="output-task1" class="terminal-output"></div>
+    </div>
+
+    <!-- ЗАДАНИЕ 2 -->
+    <div class="card">
+      <span class="badge">Скриншот 2</span>
+      <h2>Задание 2. Отбор невыполненных задач (getPendingTasks)</h2>
+      <p>Проверка отбора из demoTasks (ожидаются id [4, 7]) и пустого массива []:</p>
+      <div id="output-task2" class="terminal-output"></div>
+    </div>
+
+    <!-- ЗАДАНИЕ 3 -->
+    <div class="card">
+      <span class="badge">Скриншот 3</span>
+      <h2>Задание 3. Изменение статуса задачи (setTaskCompleted)</h2>
+      <p>Проверка изменения id = 4 (иммутабельность) и отказа на id = 777:</p>
+      <div id="output-task3" class="terminal-output"></div>
+    </div>
+
+    <!-- ЗАДАНИЕ 4 -->
+    <div class="card">
+      <span class="badge">Скриншот 4</span>
+      <h2>Задание 4. Переключение статуса в браузере (ПР3)</h2>
+      <p>Инструкция: выберите фильтр <b>«В работе»</b>, затем нажмите кнопку <b>«Выполнена»</b> у задачи 4. Сделайте скриншот!</p>
+      <iframe src="./task4_app/index.html"></iframe>
+    </div>
+  </div>
+
+  <script>
+    // --- TASK 1 ---
+    function runTask1() {
+      let logs = [];
+      function showProgress(totalTasks, completedTasks) {
+        if (typeof totalTasks !== "number" || typeof completedTasks !== "number" ||
+            !Number.isInteger(totalTasks) || !Number.isInteger(completedTasks)) {
+          logs.push("Ошибка: параметры должны быть целыми числами");
+          return;
+        }
+        if (totalTasks < 0 || totalTasks > 1000) {
+          logs.push("Ошибка: общее количество задач должно быть от 0 до 1000");
+          return;
+        }
+        if (completedTasks < 0 || completedTasks > totalTasks) {
+          logs.push("Ошибка: выполнено задач больше, чем существует, или число отрицательно");
+          return;
+        }
+        if (totalTasks === 0 && completedTasks === 0) {
+          logs.push("Задач пока нет");
+          return;
+        }
+        const remaining = totalTasks - completedTasks;
+        const progress = (completedTasks / totalTasks) * 100;
+        let status = "В работе";
+        if (completedTasks === 0) status = "Не начато";
+        else if (completedTasks === totalTasks) status = "Завершено";
+
+        logs.push(`Всего задач: ${totalTasks}`);
+        logs.push(`Выполнено: ${completedTasks}`);
+        logs.push(`Осталось: ${remaining}`);
+        logs.push(`Прогресс: ${progress.toFixed(1)}%`);
+        logs.push(`Статус: ${status}`);
+      }
+
+      logs.push("=== Проверка 1: totalTasks = 12, completedTasks = 5 ===");
+      showProgress(12, 5);
+      logs.push("\n=== Проверка 2: totalTasks = 0, completedTasks = 0 ===");
+      showProgress(0, 0);
+      logs.push("\n=== Проверка 3: totalTasks = 5, completedTasks = 6 ===");
+      showProgress(5, 6);
+
+      const out = logs.join("\n");
+      document.querySelector("#output-task1").textContent = out;
+      console.log("--- ЗАДАНИЕ 1 ---\n" + out);
+    }
+
+    // --- TASK 2 ---
+    function runTask2() {
+      const demoTasks = [
+        { id: 1, title: "Изучить функции", completed: true, priority: "medium" },
+        { id: 4, title: "Подготовить модель задач", completed: false, priority: "high" },
+        { id: 7, title: "Проверить методы массивов", completed: false, priority: "low" },
+        { id: 10, title: "Оформить README", completed: true, priority: "medium" },
+      ];
+
+      function getPendingTasks(tasks) {
+        return tasks.filter((task) => task.completed === false);
+      }
+
+      let logs = [];
+      logs.push("=== 1. Вызов getPendingTasks(demoTasks) ===");
+      const resDemo = getPendingTasks(demoTasks);
+      logs.push("Идентификаторы невыполненных задач: [" + resDemo.map(t => t.id).join(", ") + "]");
+      logs.push("Результат (массив объектов):\n" + JSON.stringify(resDemo, null, 2));
+
+      logs.push("\n=== 2. Вызов getPendingTasks([]) ===");
+      const resEmpty = getPendingTasks([]);
+      logs.push("Результат для пустого массива: " + JSON.stringify(resEmpty));
+
+      const out = logs.join("\n");
+      document.querySelector("#output-task2").textContent = out;
+      console.log("--- ЗАДАНИЕ 2 ---\n" + out);
+    }
+
+    // --- TASK 3 ---
+    function runTask3() {
+      const demoTasks = [
+        { id: 1, title: "Изучить функции", completed: true, priority: "medium" },
+        { id: 4, title: "Подготовить модель задач", completed: false, priority: "high" },
+        { id: 7, title: "Проверить методы массивов", completed: false, priority: "low" },
+        { id: 10, title: "Оформить README", completed: true, priority: "medium" },
+      ];
+
+      function isValidId(id) {
+        return typeof id === "number" && Number.isInteger(id) && id > 0 && id <= Number.MAX_SAFE_INTEGER;
+      }
+
+      function setTaskCompleted(tasks, id, completed) {
+        if (!Array.isArray(tasks)) return { ok: false, error: "Параметр tasks должен быть массивом" };
+        if (!isValidId(id)) return { ok: false, error: "Некорректный идентификатор задачи" };
+        if (typeof completed !== "boolean") return { ok: false, error: "Статус задачи должен быть булевым значением" };
+
+        const taskIndex = tasks.findIndex((task) => task.id === id);
+        if (taskIndex === -1) return { ok: false, error: "Задача с указанным id не найдена" };
+
+        const updatedTasks = tasks.map((task) =>
+          task.id === id ? { ...task, completed } : task
+        );
+        return { ok: true, tasks: updatedTasks };
+      }
+
+      let logs = [];
+      logs.push("=== Проверка 1: setTaskCompleted(demoTasks, 4, true) ===");
+      const resSuccess = setTaskCompleted(demoTasks, 4, true);
+      if (resSuccess.ok) {
+        const updatedTask = resSuccess.tasks.find(t => t.id === 4);
+        const originalTask = demoTasks.find(t => t.id === 4);
+        logs.push(`Статус в НОВОМ объекте (id = 4): completed = ${updatedTask.completed}`);
+        logs.push(`Статус в ИСХОДНОМ массиве demoTasks (id = 4): completed = ${originalTask.completed}`);
+        logs.push(`Проверка иммутабельности (ссылки не равны): ${resSuccess.tasks !== demoTasks}`);
+      }
+
+      logs.push("\n=== Проверка 2: setTaskCompleted(demoTasks, 777, true) ===");
+      const resError = setTaskCompleted(demoTasks, 777, true);
+      logs.push("Результат отказа: " + JSON.stringify(resError, null, 2));
+
+      const out = logs.join("\n");
+      document.querySelector("#output-task3").textContent = out;
+      console.log("--- ЗАДАНИЕ 3 ---\n" + out);
+    }
+
+    runTask1();
+    runTask2();
+    runTask3();
+  </script>
+</body>
+</html>

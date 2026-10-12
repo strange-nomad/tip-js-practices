@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>КР1 / Задание 4 — Переключение статуса в браузере</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <p class="eyebrow">Технологии индустриального программирования / КР1 (Задание 4)</p>
+      <h1>Мои задачи</h1>
+      <p>Список, фильтры и события. Общий контрольный набор demoTasks.</p>
+      <p id="dataset-label" class="muted">Общий контрольный набор (id: 1, 4, 7, 10)</p>
+    </header>
+
+    <section aria-labelledby="summary-heading" class="panel">
+      <h2 id="summary-heading">Сводка по всему списку</h2>
+      <dl id="task-summary" class="summary-grid">
+        <div><dt>Всего</dt><dd data-stat="total">4</dd></div>
+        <div><dt>Выполнено</dt><dd data-stat="completed">2</dd></div>
+        <div><dt>Осталось</dt><dd data-stat="pending">2</dd></div>
+        <div><dt>Прогресс</dt><dd data-stat="progress">50.0%</dd></div>
+        <div><dt>Показано</dt><dd data-stat="visible">4</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="list-heading">
+      <h2 id="list-heading">Список задач</h2>
+      <div id="task-filters" class="filters" role="group" aria-label="Фильтр по статусу">
+        <button type="button" data-filter="all" aria-pressed="true" class="is-active"><span class="filter-label">Все</span></button>
+        <button type="button" data-filter="pending" aria-pressed="false"><span class="filter-label">В работе</span></button>
+        <button type="button" data-filter="completed" aria-pressed="false"><span class="filter-label">Выполненные</span></button>
+      </div>
+      <p id="operation-message" class="operation-message" role="status" aria-live="polite"></p>
+      <p id="empty-message" class="empty-message" hidden></p>
+      <ul id="task-list" class="task-list" aria-label="Задачи"></ul>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>

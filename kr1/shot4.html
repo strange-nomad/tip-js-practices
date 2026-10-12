@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ПР3 — Мои задачи (Результат переключения)</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #182331;
+      background: #f1f4f7;
+      line-height: 1.55;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 20px; }
+    .page { max-width: 900px; margin: 0 auto; }
+    h1 { font-size: 2.2rem; line-height: 1.15; margin: 8px 0; color: #0f172a; }
+    h2 { font-size: 1.15rem; margin: 0 0 16px; color: #1e293b; }
+    p { margin: 6px 0; }
+    .eyebrow { font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: #52606e; font-weight: 600; }
+    .page-header { margin-bottom: 20px; }
+    .muted { color: #52606e; font-size: 0.9rem; }
+    .panel { background: #fff; border: 1px solid #d7dfe7; border-radius: 12px; padding: 20px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 0; }
+    dt { color: #52606e; font-size: .85rem; }
+    dd { margin: 0; font-size: 1.55rem; font-weight: 700; color: #174d6a; }
+    .filters, .task-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    button { font: inherit; color: inherit; border: 1px solid #9aaab8; border-radius: 7px; padding: 7px 14px; background: #fff; cursor: pointer; font-size: 0.95rem; }
+    button.is-active, button[aria-pressed="true"] { background: #174d6a; color: #fff; border-color: #174d6a; font-weight: 600; }
+    .task-list { list-style: none; margin: 16px 0 0; padding: 0; }
+    .task-card { border: 1px solid #d7dfe7; border-radius: 9px; padding: 16px; margin-top: 12px; background: #fafbfc; }
+    .task-title { font-size: 1.05rem; margin: 0 0 6px; color: #0f172a; }
+    .task-status, .task-priority { display: inline-block; font-size: .85rem; margin-right: 16px; }
+    .task-status { font-weight: 600; color: #c2410c; }
+    .task-priority { color: #52606e; }
+    .task-actions { margin-top: 12px; }
+    button[data-action="delete"] { color: #9b2222; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <p class="eyebrow">Технологии индустриального программирования / ПР3</p>
+      <h1>Мои задачи</h1>
+      <p class="muted">Общий контрольный набор demoTasks. Фильтр: «В работе». Задача id = 4 отмечена выполненной.</p>
+    </header>
+
+    <section class="panel" aria-labelledby="summary-heading">
+      <h2 id="summary-heading">Сводка по всему списку</h2>
+      <dl class="summary-grid">
+        <div><dt>Всего</dt><dd>4</dd></div>
+        <div><dt>Выполнено</dt><dd>3</dd></div>
+        <div><dt>Осталось</dt><dd>1</dd></div>
+        <div><dt>Прогресс</dt><dd>75.0%</dd></div>
+        <div><dt>Показано</dt><dd>1</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel" aria-labelledby="list-heading">
+      <h2 id="list-heading">Список задач</h2>
+      <div class="filters" role="group" aria-label="Фильтр по статусу">
+        <button type="button">Все</button>
+        <button type="button" class="is-active" aria-pressed="true">В работе</button>
+        <button type="button">Выполненные</button>
+      </div>
+      <ul class="task-list">
+        <li class="task-card" data-task-id="7">
+          <h3 class="task-title">Проверить методы массивов</h3>
+          <span class="task-status">В работе</span>
+          <span class="task-priority">Приоритет: Низкий</span>
+          <div class="task-actions">
+            <button type="button" data-action="toggle">Выполнена</button>
+            <button type="button" data-action="delete">Удалить</button>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

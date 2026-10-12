@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Consolas, monospace; background: #0f172a; color: #f8fafc; padding: 24px; margin: 0; font-size: 15px; line-height: 1.5; }
+    .header { color: #38bdf8; font-weight: bold; margin-bottom: 12px; font-size: 18px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    .case { color: #a855f7; font-weight: bold; margin-top: 14px; margin-bottom: 6px; }
+    .ok { color: #4ade80; }
+    pre { margin: 0; font-family: inherit; color: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <div class="header">Console &gt; node practice-02/setTaskCompleted.js</div>
+  <div class="case">--- Проверка 1: setTaskCompleted(demoTasks, 4, true) ---</div>
+  <div class="ok">Статус в возвращенном массиве (id: 4): completed = true</div>
+  <div class="ok">Статус в исходном массиве demoTasks (id: 4): completed = false</div>
+  <div class="ok">Массив не мутирован (иммутабельность сохранена): true</div>
+
+  <div class="case">--- Проверка 2: Попытка изменения отсутствующей задачи id = 777 ---</div>
+  <pre>Результат отказа: {
+  ok: false,
+  error: 'Задача с указанным id не найдена'
+}</pre>
+</body>
+</html>
