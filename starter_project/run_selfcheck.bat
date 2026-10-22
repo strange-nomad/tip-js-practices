@@ -1,7 +1,12 @@
 @echo off
+chcp 65001 >nul
+where javac >nul 2>&1
+if %errorlevel% neq 0 (
+    if exist "%ProgramFiles%\Eclipse Adoptium\jdk-21.0.12.101-hotspot\bin" (
+        set "PATH=%ProgramFiles%\Eclipse Adoptium\jdk-21.0.12.101-hotspot\bin;%PATH%"
+    )
+)
 if exist out rmdir /s /q out
 mkdir out
-for /r src %%f in (*.java) do echo %%f>>sources.txt
-javac -encoding UTF-8 -d out @sources.txt
-del sources.txt
+javac -encoding UTF-8 -d out src\ru\edu\pr01\*.java
 java -cp out ru.edu.pr01.SelfCheck
