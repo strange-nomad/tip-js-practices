@@ -8,24 +8,30 @@
 - Вариант: № 4 (Ставка НДС = 25%)
 
 ## Структура
-- `src/OrderCalculator.java` — основной класс с декомпозицией методов и консольным интерфейсом.
-- `src/SelfCheck.java` — автономный тестовый модуль для самопроверки и граничных тестов.
+- `src/ru/edu/pr01/OrderCalculator.java` — основной класс с декомпозицией методов и консольным интерфейсом.
+- `src/ru/edu/pr01/SelfCheck.java` — автономный тестовый модуль для самопроверки и граничных тестов.
 - `data/sample.csv` — тестовый набор данных.
+- `diagrams/` — исходные и дополненные диаграммы (DOT и PNG).
 - `DECISIONS.md` — файл принципиальных архитектурных решений.
+- `.gitignore` — файл исключений для git.
 
 ## Инструкция по запуску
 
-### Компиляция:
+### Запуск тестов через готовые скрипты:
+- **Windows:** `run_selfcheck.bat`
+- **Linux / macOS:** `./run_selfcheck.sh`
+
+### Ручная компиляция:
 ```bash
-javac -encoding UTF-8 -d bin src/*.java
+javac -encoding UTF-8 -d out src/ru/edu/pr01/*.java
 ```
 
 ### Запуск интерактивного калькулятора:
 ```bash
-java -cp bin starter_project.OrderCalculator
+java -cp out ru.edu.pr01.OrderCalculator
 ```
 
-### Запуск тестов SelfCheck:
+### Запуск тестов SelfCheck вручную:
 ```bash
-java -cp bin starter_project.SelfCheck
+java -cp out ru.edu.pr01.SelfCheck
 ```
