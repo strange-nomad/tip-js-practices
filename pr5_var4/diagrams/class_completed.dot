@@ -1,0 +1,9 @@
+digraph ClassCompleted {
+    rankdir=BT;
+    node [shape=record, fontname="Arial"];
+
+    TimesheetAnalyzer [label="{TimesheetAnalyzer|+ DAYS_COUNT : int = 5\l+ MIN_HOURS : int = 0\l+ MAX_HOURS : int = 16\l+ DAILY_NORM : int = 8\l+ WEEKLY_NORM : int = 40\l|+ parseHours(line : String) : int[]\l+ total(hours : int[]) : int\l+ average(hours : int[]) : double\l+ overtimeDays(hours : int[]) : int\l+ weeklyOvertime(hours : int[]) : int\l+ addWorkingDaysCount(hours : int[]) : int\l- validateHoursArray(hours : int[]) : void\l+ main(args : String[]) : void\l}"];
+    SelfCheck [label="{SelfCheck|- passed : int\l- failed : int\l|+ main(args : String[]) : void\l- check(name : String, test : CheckFunction) : void\l- expectException(runnable : Runnable, substring : String) : boolean\l- runDataDrivenTests(csvPath : String) : void\l}"];
+
+    SelfCheck -> TimesheetAnalyzer [style=dashed, label="тестирует"];
+}

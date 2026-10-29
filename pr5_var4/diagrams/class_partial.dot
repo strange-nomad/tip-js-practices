@@ -1,0 +1,9 @@
+digraph ClassPartial {
+    rankdir=BT;
+    node [shape=record, fontname="Arial"];
+
+    TimesheetAnalyzer [label="{TimesheetAnalyzer||+ parseHours(line : String) : int[]\l+ total(hours : int[]) : int\l+ average(hours : int[]) : double\l+ overtimeDays(hours : int[]) : int\l+ weeklyOvertime(hours : int[]) : int\l// TODO: методы варианта\l}"];
+    SelfCheck [label="{SelfCheck||+ main(args : String[]) : void\l}"];
+
+    SelfCheck -> TimesheetAnalyzer [style=dashed, label="тестирует"];
+}
