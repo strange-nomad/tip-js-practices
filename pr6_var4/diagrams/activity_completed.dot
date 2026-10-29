@@ -1,0 +1,63 @@
+digraph ActivityCompleted {
+    rankdir=TB;
+    node [shape=box, style=rounded, fontname="Arial"];
+    edge [fontname="Arial"];
+
+    start [shape=circle, label="Начало", style=filled, fillcolor="#d4edda"];
+    end [shape=doublecircle, label="Завершение", style=filled, fillcolor="#d4edda"];
+
+    n1 [label="Получить параметры заявки:\namount, urgent, risk, personal"];
+    n2 [shape=diamond, label="amount >= 0 &&\nrisk != null?"];
+    err [label="Выброс IllegalArgumentException", style="rounded,filled", fillcolor="#f8d7da"];
+
+    r1 [shape=diamond, label="R1: personal\n== true?"];
+    r1_act [label="SECURITY_REVIEW", style="rounded,filled", fillcolor="#d4edda"];
+
+    r2 [shape=diamond, label="R2: risk\n== HIGH?"];
+    r2_act [label="DIRECTOR_REVIEW", style="rounded,filled", fillcolor="#d4edda"];
+
+    r3 [shape=diamond, label="R3: amount\n>= 500 000?"];
+    r3_act [label="FINANCE_REVIEW", style="rounded,filled", fillcolor="#d4edda"];
+
+    r4 [shape=diamond, label="R4: urgent\n== true?"];
+    r4_act [label="FAST_TRACK", style="rounded,filled", fillcolor="#d4edda"];
+
+    r5_med [shape=diamond, label="R5 (Вар. 4):\nrisk == MEDIUM?"];
+    r5_med_act [label="DIRECTOR_REVIEW", style="rounded,filled", fillcolor="#d4edda"];
+
+    r5_amt [shape=diamond, label="R5 (Вар. 4):\namount >= 50 000?"];
+    r5_amt_act [label="FINANCE_REVIEW", style="rounded,filled", fillcolor="#d4edda"];
+
+    r5_std [label="STANDARD\n(amount < 50k, LOW, !urgent)", style="rounded,filled", fillcolor="#d4edda"];
+
+    start -> n1 -> n2;
+    n2 -> err [label="нет"];
+    n2 -> r1 [label="да"];
+
+    r1 -> r1_act [label="да"];
+    r1 -> r2 [label="нет"];
+
+    r2 -> r2_act [label="да"];
+    r2 -> r3 [label="нет"];
+
+    r3 -> r3_act [label="да"];
+    r3 -> r4 [label="нет"];
+
+    r4 -> r4_act [label="да"];
+    r4 -> r5_med [label="нет"];
+
+    r5_med -> r5_med_act [label="да"];
+    r5_med -> r5_amt [label="нет"];
+
+    r5_amt -> r5_amt_act [label="да"];
+    r5_amt -> r5_std [label="нет"];
+
+    r1_act -> end;
+    r2_act -> end;
+    r3_act -> end;
+    r4_act -> end;
+    r5_med_act -> end;
+    r5_amt_act -> end;
+    r5_std -> end;
+    err -> end;
+}

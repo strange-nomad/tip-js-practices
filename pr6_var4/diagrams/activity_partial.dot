@@ -1,0 +1,24 @@
+digraph ActivityPartial {
+    rankdir=TB;
+    node [shape=box, style=rounded, fontname="Arial"];
+    edge [fontname="Arial"];
+
+    start [shape=circle, label="Начало", style=filled, fillcolor=lightgray];
+    end [shape=doublecircle, label="Завершение", style=filled, fillcolor=lightgray];
+
+    n1 [label="Получить параметры заявки:\namount, urgent, risk, personal"];
+    n2 [label="Проверить защитные условия:\namount >= 0 и risk != null?"];
+    n3 [label="TODO A1:\nПроверить правила R1-R5 по приоритету", style="rounded,filled", fillcolor="#ffcccc"];
+    n4 [shape=diamond, label="Маршрут\nопределён?"];
+    n6 [label="Вернуть маршрут (ApprovalRoute)"];
+    n7 [label="Вернуть ошибку (IAE)", style="rounded,filled", fillcolor="#f8d7da"];
+
+    start -> n1 -> n2;
+    n2 -> n3 [label="корректно"];
+    n2 -> n7 [label="ошибка"];
+    n3 -> n4;
+    n4 -> n6 [label="да"];
+    n4 -> n7 [label="нет"];
+    n6 -> end;
+    n7 -> end;
+}

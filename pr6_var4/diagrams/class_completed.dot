@@ -1,0 +1,13 @@
+digraph ClassCompleted {
+    rankdir=BT;
+    node [shape=record, fontname="Arial"];
+
+    ApprovalRoute [label="{\<\<enumeration\>\>\nApprovalRoute|STANDARD\lFAST_TRACK\lFINANCE_REVIEW\lDIRECTOR_REVIEW\lSECURITY_REVIEW\l}"];
+    RiskLevel [label="{\<\<enumeration\>\>\nRiskLevel|LOW\lMEDIUM\lHIGH\l}"];
+    ApprovalRouter [label="{ApprovalRouter|+ FINANCE_LIMIT : long = 500000L\l+ STANDARD_LIMIT : long = 50000L\l|+ route(amount : long, urgent : boolean, risk : RiskLevel, personal : boolean) : ApprovalRoute\l+ addStandardEligibility(amount : long, urgent : boolean, risk : RiskLevel, personal : boolean) : boolean\l+ main(args : String[]) : void\l}"];
+    SelfCheck [label="{SelfCheck|- passed : int\l- failed : int\l|+ main(args : String[]) : void\l- check(name : String, test : CheckFunction) : void\l- expectException(runnable : Runnable) : boolean\l- runDataDrivenTests(csvPath : String) : void\l}"];
+
+    ApprovalRouter -> ApprovalRoute [style=dashed, label="returns"];
+    ApprovalRouter -> RiskLevel [style=dashed, label="uses"];
+    SelfCheck -> ApprovalRouter [style=dashed, label="tests"];
+}
