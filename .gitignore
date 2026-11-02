@@ -1,13 +1,38 @@
+# Зависимости и сборка
 node_modules/
 dist/
+
+# Окружение и системные файлы
 .env
 .env.*
 !.env.example
 *.log
 .DS_Store
 Thumbs.db
+~$*
+test.png
+*.txt
+
+# Служебные репозитории и инструменты
 repo-reference/
 bekir-repo/
 .agent/
-test.png
-~$*
+find_q.py
+
+# Генераторы и временные HTML стенды
+kr1/shot*.html
+kr1/*.py
+kr1/run_all.html
+kr2/shot*.html
+kr2/*.py
+
+# Бинарные файлы отчётов и архивы (сдаются в СДО, а не в репозиторий)
+*.docx
+*.pdf
+*.zip
+
+# Проекты по другой дисциплине (Информационные системы / Java)
+starter_project/
+pr5_var4/
+pr6_var4/
+*.class
