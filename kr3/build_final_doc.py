@@ -1,9 +1,11 @@
 import os
 import docx
 from docx import Document
-from docx.shared import Inches, Pt
+from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 base_doc_path = r"C:\Users\user\Desktop\ТИПЫ\КР3 ТИП (3 семестр).docx"
 output_path = r"C:\Users\user\Desktop\ТИПЫ\КР3_ЭФБО-17-25_КабановА.docx"
@@ -71,6 +73,67 @@ for row_idx, (col1, col2) in enumerate(table_data):
     if col1 in ["Дисциплина", "Институт", "Кафедра", "Студент"]:
         cell2.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
     cell2.width = Inches(4.2)
+
+# Функция для вставки аккуратного моноширинного блока кода строго по левому краю
+def insert_code_block(p, caption_text, code_text):
+    # Оформляем параграф заголовка листинга
+    p.text = caption_text
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.paragraph_format.first_line_indent = Pt(0)
+    p.paragraph_format.left_indent = Pt(0)
+    p.paragraph_format.space_before = Pt(12)
+    p.paragraph_format.space_after = Pt(4)
+    run_cap = p.runs[0]
+    run_cap.font.name = "Times New Roman"
+    run_cap.font.size = Pt(11)
+    run_cap.font.bold = True
+    run_cap.font.color.rgb = RGBColor(15, 23, 42)
+
+    # 1x1 таблица-карточка для моноширинного кода
+    tbl = doc.add_table(rows=1, cols=1)
+    tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
+    p._element.addnext(tbl._element)
+
+    cell = tbl.cell(0, 0)
+    cell.width = Inches(6.5)
+
+    # Фон и рамка карточки кода
+    shading = parse_xml(f'<w:shd {nsdecls("w")} w:fill="F8FAFC"/>')
+    cell._element.get_or_add_tcPr().append(shading)
+    borders = parse_xml(f'''<w:tcBorders {nsdecls("w")}>
+        <w:left w:val="single" w:sz="18" w:space="0" w:color="2563EB"/>
+        <w:top w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+        <w:right w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+        <w:bottom w:val="single" w:sz="4" w:space="0" w:color="E2E8F0"/>
+    </w:tcBorders>''')
+    cell._element.get_or_add_tcPr().append(borders)
+
+    mar = parse_xml(f'''<w:tcMar {nsdecls("w")}>
+        <w:top w:w="120" w:type="dxa"/>
+        <w:bottom w:w="120" w:type="dxa"/>
+        <w:left w:w="160" w:type="dxa"/>
+        <w:right w:w="160" w:type="dxa"/>
+    </w:tcMar>''')
+    cell._element.get_or_add_tcPr().append(mar)
+
+    # Каждая строка кода добавляется отдельным абзацем без отступов и выравнивания по ширине
+    code_p = cell.paragraphs[0]
+    lines = code_text.strip().split('\n')
+    for idx, line in enumerate(lines):
+        curr_p = code_p if idx == 0 else cell.add_paragraph()
+        curr_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        curr_p.paragraph_format.first_line_indent = Pt(0)
+        curr_p.paragraph_format.left_indent = Pt(0)
+        curr_p.paragraph_format.line_spacing = 1.05
+        curr_p.paragraph_format.space_before = Pt(0)
+        curr_p.paragraph_format.space_after = Pt(0)
+        
+        r = curr_p.add_run(line if line else ' ')
+        r.font.name = 'Consolas'
+        r.font.size = Pt(8.5)
+        r.font.color.rgb = RGBColor(15, 23, 42)
+
+    return tbl
 
 # Листинги кода для заданий 1-4
 listing1_code = """// src/components/TaskList.jsx: условный вывод списка и итерация .map
@@ -256,55 +319,99 @@ explanation4_text = "Пояснение. Клиентская валидация
 
 for p in doc.paragraphs:
     if "[Вставьте React-код: условный вывод списка и логику его фильтрации]" in p.text:
-        p.text = "Листинг 1. Реализация условного вывода списка и клиентской фильтрации:\n" + listing1_code
-        p.runs[0].font.name = "Consolas"
-        p.runs[0].font.size = Pt(9.5)
+        insert_code_block(p, "Листинг 1. Реализация условного вывода списка и клиентской фильтрации:", listing1_code)
+
     elif "[Покажите экран приложения с работающим фильтром «Завершенные»]" in p.text:
         p.text = "Скриншот 1. Интерфейс приложения с активным фильтром «Завершенные» (кнопка активна, в списке только выполненные задачи):"
+        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.first_line_indent = Pt(0)
+        p.paragraph_format.space_before = Pt(8)
+        p.paragraph_format.space_after = Pt(4)
+        run_shot = p.runs[0]
+        run_shot.font.name = "Times New Roman"
+        run_shot.font.size = Pt(11)
+        run_shot.font.bold = True
+        
         img_p = doc.add_paragraph()
         p._element.addnext(img_p._element)
         img_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        img_p.paragraph_format.space_before = Pt(4)
+        img_p.paragraph_format.space_after = Pt(10)
         img_p.add_run().add_picture(os.path.join(screenshots_dir, "screenshot1.png"), width=Inches(5.8))
         
     elif "[Вставьте код кастомного хука useTaskData]" in p.text:
-        p.text = "Листинг 2. Кастомный асинхронный хук useTaskData с управлением состояниями:\n" + listing2_code
-        p.runs[0].font.name = "Consolas"
-        p.runs[0].font.size = Pt(9.5)
+        insert_code_block(p, "Листинг 2. Кастомный асинхронный хук useTaskData с управлением состояниями:", listing2_code)
+
     elif "[Покажите логи последовательной смены isLoading и данных в консоли DevTools]" in p.text:
         p.text = "Скриншот 2. Логирование пошаговой смены асинхронных состояний (isLoading: true -> false, tasks: 0 -> 12) в консоли браузера:"
+        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.first_line_indent = Pt(0)
+        p.paragraph_format.space_before = Pt(8)
+        p.paragraph_format.space_after = Pt(4)
+        run_shot = p.runs[0]
+        run_shot.font.name = "Times New Roman"
+        run_shot.font.size = Pt(11)
+        run_shot.font.bold = True
+
         img_p = doc.add_paragraph()
         p._element.addnext(img_p._element)
         img_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        img_p.paragraph_format.space_before = Pt(4)
+        img_p.paragraph_format.space_after = Pt(10)
         img_p.add_run().add_picture(os.path.join(screenshots_dir, "screenshot2.png"), width=Inches(5.8))
 
     elif "[Вставьте серверный код обработки маршрута GET и чтения параметров строки запроса]" in p.text:
-        p.text = "Листинг 3. Серверная обработка маршрута GET /api/tasks с извлечением query-параметров:\n" + listing3_code
-        p.runs[0].font.name = "Consolas"
-        p.runs[0].font.size = Pt(9.5)
+        insert_code_block(p, "Листинг 3. Серверная обработка маршрута GET /api/tasks с извлечением query-параметров:", listing3_code)
+
     elif "[Покажите отфильтрованный JSON-ответ сервера и HTTP-статус 200]" in p.text:
         p.text = "Скриншот 3. Ответ сервера по запросу GET /api/tasks?completed=true со статусом 200 OK и отфильтрованным JSON-массивом:"
+        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.first_line_indent = Pt(0)
+        p.paragraph_format.space_before = Pt(8)
+        p.paragraph_format.space_after = Pt(4)
+        run_shot = p.runs[0]
+        run_shot.font.name = "Times New Roman"
+        run_shot.font.size = Pt(11)
+        run_shot.font.bold = True
+
         img_p = doc.add_paragraph()
         p._element.addnext(img_p._element)
         img_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        img_p.paragraph_format.space_before = Pt(4)
+        img_p.paragraph_format.space_after = Pt(10)
         img_p.add_run().add_picture(os.path.join(screenshots_dir, "screenshot3.png"), width=Inches(5.8))
 
     elif "[Вставьте код валидации POST-запроса и отправки статус-кода 400]" in p.text:
-        p.text = "Листинг 4. Модуль серверной валидации POST-запроса и отправка ошибки 400 Bad Request:\n" + listing4_code
-        p.runs[0].font.name = "Consolas"
-        p.runs[0].font.size = Pt(9.5)
+        insert_code_block(p, "Листинг 4. Модуль серверной валидации POST-запроса и отправка ошибки 400 Bad Request:", listing4_code)
+
     elif "[Покажите статус 400 Bad Request и JSON-текст ошибки от сервера]" in p.text:
         p.text = "Скриншот 4. Ответ сервера со статусом 400 Bad Request и структурированной ошибкой в JSON на невалидный POST-запрос:"
+        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p.paragraph_format.first_line_indent = Pt(0)
+        p.paragraph_format.space_before = Pt(8)
+        p.paragraph_format.space_after = Pt(4)
+        run_shot = p.runs[0]
+        run_shot.font.name = "Times New Roman"
+        run_shot.font.size = Pt(11)
+        run_shot.font.bold = True
+
         img_p = doc.add_paragraph()
         p._element.addnext(img_p._element)
         img_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        img_p.paragraph_format.space_before = Pt(4)
+        img_p.paragraph_format.space_after = Pt(8)
         img_p.add_run().add_picture(os.path.join(screenshots_dir, "screenshot4.png"), width=Inches(5.8))
         
         # Добавляем пояснение, запрашиваемое заданием 4
         p_exp = doc.add_paragraph()
         img_p._element.addnext(p_exp._element)
         p_exp.text = explanation4_text
+        p_exp.alignment = WD_ALIGN_PARAGRAPH.LEFT
+        p_exp.paragraph_format.first_line_indent = Pt(18)
+        p_exp.paragraph_format.space_before = Pt(4)
+        p_exp.paragraph_format.space_after = Pt(8)
         p_exp.runs[0].font.name = "Times New Roman"
         p_exp.runs[0].font.size = Pt(11)
 
 doc.save(output_path)
-print("Saved report to:", output_path, "Size:", os.path.getsize(output_path), "bytes")
+print("Saved beautifully formatted report to:", output_path, "Size:", os.path.getsize(output_path), "bytes")
