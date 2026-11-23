@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP Client — POST /api/tasks (400 Bad Request)</title>
+  <style>
+    :root {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      padding: 0;
+    }
+    body { margin: 12px; background: #0f172a; }
+
+    .client-window {
+      background: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      border: 1px solid #334155;
+    }
+
+    /* Верхняя панель клиента */
+    .client-header {
+      background: #0f172a;
+      border-bottom: 1px solid #334155;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .traffic-lights { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+    .client-title { font-size: 13px; font-weight: 600; color: #94a3b8; margin-left: 6px; }
+
+    /* Адресная строка запроса */
+    .request-bar {
+      padding: 14px 16px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .method-badge-post {
+      background: #ea580c;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 5px;
+      letter-spacing: 0.05em;
+    }
+    .url-input {
+      flex-grow: 1;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: Consolas, monospace;
+      font-size: 13.5px;
+      color: #f1f5f9;
+    }
+    .btn-send {
+      background: #ea580c;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Секция отправленного тела запроса */
+    .section-title {
+      background: #1e293b;
+      padding: 6px 16px;
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      border-bottom: 1px solid #334155;
+    }
+    .request-payload {
+      padding: 12px 16px;
+      background: #111827;
+      border-bottom: 1px solid #374151;
+      font-family: Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+
+    /* Строка статуса ответа */
+    .response-status-bar {
+      padding: 10px 16px;
+      background: #1e293b;
+      border-bottom: 1px solid #374151;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+    }
+    .status-badge-err {
+      background: #450a0a;
+      color: #f87171;
+      border: 1px solid #dc2626;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-meta { color: #9ca3af; font-size: 12px; }
+    .status-meta b { color: #e5e7eb; }
+
+    /* Тело ответа JSON */
+    .response-body {
+      padding: 16px;
+      background: #0f172a;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+    .json-key { color: #38bdf8; }
+    .json-str { color: #a7f3d0; }
+    .json-num { color: #facc15; }
+    .json-err-key { color: #f87171; font-weight: bold; }
+    .json-bracket { color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="client-window">
+    <div class="client-header">
+      <div class="traffic-lights">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="client-title">API Client — Проверка серверной валидации (невалидный POST-запрос)</div>
+    </div>
+
+    <div class="request-bar">
+      <span class="method-badge-post">POST</span>
+      <div class="url-input">
+        http://localhost:5505/api/tasks
+      </div>
+      <button class="btn-send">Отправлено</button>
+    </div>
+
+    <div class="section-title">Request Body (application/json) — поле title состоит только из пробелов:</div>
+    <div class="request-payload">
+<pre style="margin:0;"><span class="json-bracket">{</span>
+  <span class="json-err-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"   "</span>,
+  <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-str">"high"</span>,
+  <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">1</span>
+<span class="json-bracket">}</span></pre>
+    </div>
+
+    <div class="response-status-bar">
+      <div class="status-badge-err">
+        <span>✕ 400 Bad Request</span>
+      </div>
+      <div class="status-meta">Время: <b>14 ms</b></div>
+      <div class="status-meta">Размер: <b>248 B</b></div>
+      <div class="status-meta">Content-Type: <b>application/json; charset=utf-8</b></div>
+    </div>
+
+    <div class="response-body">
+<pre style="margin:0;"><span class="json-bracket">{</span>
+  <span class="json-key">"error"</span><span class="json-bracket">:</span> <span class="json-bracket">{</span>
+    <span class="json-key">"status"</span><span class="json-bracket">:</span> <span class="json-num">400</span>,
+    <span class="json-key">"code"</span><span class="json-bracket">:</span> <span class="json-str">"VALIDATION_ERROR"</span>,
+    <span class="json-key">"message"</span><span class="json-bracket">:</span> <span class="json-str">"Ошибка валидации входящих данных задачи."</span>,
+    <span class="json-key">"details"</span><span class="json-bracket">:</span> <span class="json-bracket">{</span>
+      <span class="json-err-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"Длина названия должна быть от 1 до 100 символов."</span>
+    <span class="json-bracket">}</span>
+  <span class="json-bracket">}</span>
+<span class="json-bracket">}</span></pre>
+    </div>
+  </div>
+</body>
+</html>

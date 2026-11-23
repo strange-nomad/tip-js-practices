@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP Client — GET /api/tasks?completed=true</title>
+  <style>
+    :root {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      padding: 0;
+    }
+    body { margin: 12px; background: #0f172a; }
+
+    .client-window {
+      background: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      border: 1px solid #334155;
+    }
+
+    /* Верхняя панель клиента */
+    .client-header {
+      background: #0f172a;
+      border-bottom: 1px solid #334155;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .traffic-lights { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+    .client-title { font-size: 13px; font-weight: 600; color: #94a3b8; margin-left: 6px; }
+
+    /* Адресная строка запроса */
+    .request-bar {
+      padding: 14px 16px;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .method-badge {
+      background: #16a34a;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 5px;
+      letter-spacing: 0.05em;
+    }
+    .url-input {
+      flex-grow: 1;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: Consolas, monospace;
+      font-size: 13.5px;
+      color: #f1f5f9;
+    }
+    .url-param { color: #38bdf8; font-weight: 600; }
+    .btn-send {
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Строка статуса ответа */
+    .response-status-bar {
+      padding: 10px 16px;
+      background: #111827;
+      border-bottom: 1px solid #374151;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+    }
+    .status-badge {
+      background: #064e3b;
+      color: #34d399;
+      border: 1px solid #059669;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-meta { color: #9ca3af; font-size: 12px; }
+    .status-meta b { color: #e5e7eb; }
+
+    /* Тело ответа JSON */
+    .response-body {
+      padding: 16px;
+      background: #0f172a;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+    .json-key { color: #38bdf8; }
+    .json-str { color: #a7f3d0; }
+    .json-num { color: #facc15; }
+    .json-bool { color: #f472b6; font-weight: bold; }
+    .json-bracket { color: #94a3b8; }
+    .json-comment { color: #64748b; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="client-window">
+    <div class="client-header">
+      <div class="traffic-lights">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+      </div>
+      <div class="client-title">API Client — Запрос с параметром фильтрации</div>
+    </div>
+
+    <div class="request-bar">
+      <span class="method-badge">GET</span>
+      <div class="url-input">
+        http://localhost:5505/api/tasks<span class="url-param">?completed=true</span>
+      </div>
+      <button class="btn-send">Отправлено</button>
+    </div>
+
+    <div class="response-status-bar">
+      <div class="status-badge">
+        <span>● 200 OK</span>
+      </div>
+      <div class="status-meta">Время: <b>28 ms</b></div>
+      <div class="status-meta">Размер: <b>1.18 KB</b></div>
+      <div class="status-meta">Content-Type: <b>application/json; charset=utf-8</b></div>
+    </div>
+
+    <div class="response-body">
+<pre style="margin:0;"><span class="json-bracket">{</span>
+  <span class="json-key">"data"</span><span class="json-bracket">:</span> <span class="json-bracket">[</span>
+    <span class="json-bracket">{</span>
+      <span class="json-key">"id"</span><span class="json-bracket">:</span> <span class="json-num">1</span>,
+      <span class="json-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"Изучить функции"</span>,
+      <span class="json-key">"completed"</span><span class="json-bracket">:</span> <span class="json-bool">true</span>,
+      <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-str">"medium"</span>,
+      <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">1</span>
+    <span class="json-bracket">}</span>,
+    <span class="json-bracket">{</span>
+      <span class="json-key">"id"</span><span class="json-bracket">:</span> <span class="json-num">10</span>,
+      <span class="json-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"Оформить README"</span>,
+      <span class="json-key">"completed"</span><span class="json-bracket">:</span> <span class="json-bool">true</span>,
+      <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-str">"medium"</span>,
+      <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">3</span>
+    <span class="json-bracket">}</span>,
+    <span class="json-bracket">{</span>
+      <span class="json-key">"id"</span><span class="json-bracket">:</span> <span class="json-num">16</span>,
+      <span class="json-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"Проверить учебный API"</span>,
+      <span class="json-key">"completed"</span><span class="json-bracket">:</span> <span class="json-bool">true</span>,
+      <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-str">"high"</span>,
+      <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">2</span>
+    <span class="json-bracket">}</span>,
+    <span class="json-bracket">{</span>
+      <span class="json-key">"id"</span><span class="json-bracket">:</span> <span class="json-num">25</span>,
+      <span class="json-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"Исправить обработку ошибок"</span>,
+      <span class="json-key">"completed"</span><span class="json-bracket">:</span> <span class="json-bool">true</span>,
+      <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-str">"high"</span>,
+      <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">2</span>
+    <span class="json-bracket">}</span>,
+    <span class="json-bracket">{</span>
+      <span class="json-key">"id"</span><span class="json-bracket">:</span> <span class="json-num">31</span>,
+      <span class="json-key">"title"</span><span class="json-bracket">:</span> <span class="json-str">"Сверить отчёт"</span>,
+      <span class="json-key">"completed"</span><span class="json-bracket">:</span> <span class="json-bool">true</span>,
+      <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-str">"low"</span>,
+      <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">3</span>
+    <span class="json-bracket">}</span>
+  <span class="json-bracket">]</span>,
+  <span class="json-key">"meta"</span><span class="json-bracket">:</span> <span class="json-bracket">{</span>
+    <span class="json-key">"total"</span><span class="json-bracket">:</span> <span class="json-num">5</span>,
+    <span class="json-key">"filters"</span><span class="json-bracket">:</span> <span class="json-bracket">{</span>
+      <span class="json-key">"completed"</span><span class="json-bracket">:</span> <span class="json-bool">true</span>,
+      <span class="json-key">"priority"</span><span class="json-bracket">:</span> <span class="json-num">null</span>,
+      <span class="json-key">"categoryId"</span><span class="json-bracket">:</span> <span class="json-num">null</span>,
+      <span class="json-key">"q"</span><span class="json-bracket">:</span> <span class="json-str">""</span>
+    <span class="json-bracket">}</span>
+  <span class="json-bracket">}</span>
+<span class="json-bracket">}</span></pre>
+    </div>
+  </div>
+</body>
+</html>
